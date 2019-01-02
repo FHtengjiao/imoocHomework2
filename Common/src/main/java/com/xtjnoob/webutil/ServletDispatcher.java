@@ -30,7 +30,7 @@ public class ServletDispatcher extends HttpServlet {
         // 获取servletPath
         String servletPath = request.getServletPath();
 
-        // /home/add.do
+        // example: /home/add.do  -> home/add
         String servletMethod = servletPath.substring(1, (servletPath.indexOf(".do") + 1));
 
         String servlet = null;
@@ -44,6 +44,7 @@ public class ServletDispatcher extends HttpServlet {
             method = servletMethod;
         }
 
+        // 获取bean
         Object bean = context.getBean(servlet);
 
         try {
