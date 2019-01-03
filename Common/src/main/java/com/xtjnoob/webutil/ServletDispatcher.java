@@ -31,7 +31,7 @@ public class ServletDispatcher extends HttpServlet {
         String servletPath = request.getServletPath();
 
         // example: /home/add.do  -> home/add
-        String servletMethod = servletPath.substring(1, (servletPath.indexOf(".do") + 1));
+        String servletMethod = servletPath.substring(1, servletPath.indexOf(".do"));
 
         String servlet = null;
         String method = null;
@@ -50,11 +50,7 @@ public class ServletDispatcher extends HttpServlet {
         try {
             Method targetMethod = bean.getClass().getMethod(method, HttpServletRequest.class, HttpServletResponse.class);
             targetMethod.invoke(bean, request, response);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
