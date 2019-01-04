@@ -11,6 +11,7 @@ public class Book {
     private String imgPath;
     private Date createTime;
     private Date updateTime;
+    private Category category;
 
     public Long getId() {
         return id;
@@ -74,5 +75,13 @@ public class Book {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

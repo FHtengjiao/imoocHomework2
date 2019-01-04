@@ -10,5 +10,6 @@
         <result column="img_path" property="imgPath" javaType="String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <association property="category" column="category_id" select="com.xtjnoob.mapper.CategoryMapper.getCategoryById"/>
     </resultMap>
 </mapper>

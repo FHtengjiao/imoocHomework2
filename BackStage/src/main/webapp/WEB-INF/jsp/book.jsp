@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="jumbotron">
                     <h1>图书</h1>
-                    <p>图书分类列表</p>
+                    <p>${category_name}图书列表</p>
                 </div>
             </div>
             <div class="row">
@@ -36,19 +36,23 @@
                         <thead>
                         <tr>
                             <th>名称</th>
+                            <th>分类</th>
+                            <th>路径</th>
                             <th>创建时间</th>
                             <th>最后修改时间</th>
                             <th colspan="2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${categories}" var="category">
+                        <c:forEach items="${books}" var="book">
                             <tr>
-                                <td>${category.name}</td>
-                                <td><fmt:formatDate value="${category.createTime}" pattern="yyyy-MM-DD HH:mm:ss"/></td>
-                                <td><fmt:formatDate value="${category.updateTime}" pattern="yyyy-MM-DD HH:mm:ss"/></td>
-                                <td><a href="${pageContext.request.contextPath}/category/toEdit.do?id=${category.id}" class="btn btn-primary btn-sm " role="button">修改</a></td>
-                                <td><a href="${pageContext.request.contextPath}/category/delete.do?id=${category.id}" class="btn btn-primary btn-sm " role="button">删除</a></td>
+                                <td>${book.name}</td>
+                                <td>${book.category.name}</td>
+                                <td>${book.imgPath}</td>
+                                <td><fmt:formatDate value="${book.createTime}" pattern="yyyy-MM-DD HH:mm:ss"/></td>
+                                <td><fmt:formatDate value="${book.updateTime}" pattern="yyyy-MM-DD HH:mm:ss"/></td>
+                                <td><a href="${pageContext.request.contextPath}/book/toEdit.do?id=${book.id}" class="btn btn-primary btn-sm " role="button">修改</a></td>
+                                <td><a href="${pageContext.request.contextPath}/book/delete.do?id=${book.id}" class="btn btn-primary btn-sm " role="button">删除</a></td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -56,7 +60,7 @@
                 </div>
             </div>
             <div class="row">
-                <a href="${pageContext.request.contextPath}/category/toAdd.do" role="button" class="btn btn-primary">新&nbsp;建</a>
+                <a href="${pageContext.request.contextPath}/book/toAdd.do" role="button" class="btn btn-primary">新&nbsp;建</a>
             </div>
         </div>
         <nav class="navbar navbar-default navbar-fixed-bottom">

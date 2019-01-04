@@ -1,18 +1,17 @@
 package com.xtjnoob.servlet;
 
-        import com.xtjnoob.entity.Category;
-        import com.xtjnoob.service.BookService;
-        import com.xtjnoob.service.CategoryService;
-        import com.xtjnoob.webutil.Constants;
-        import org.springframework.stereotype.Component;
-        import org.springframework.util.StringUtils;
+import com.xtjnoob.entity.Category;
+import com.xtjnoob.service.CategoryService;
+import com.xtjnoob.webutil.Constants;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-        import javax.annotation.Resource;
-        import javax.servlet.ServletException;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
-        import java.io.IOException;
-        import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: xtjnoob
@@ -21,10 +20,6 @@ package com.xtjnoob.servlet;
  */
 @Component("categoryServlet")
 public class CategoryServlet {
-
-    @Resource
-    private BookService bookService;
-
     @Resource
     private CategoryService categoryService;
 
@@ -74,16 +69,81 @@ public class CategoryServlet {
         }
     }
 
+    /**
+     * @Description: 跳转编辑分类页面
+     * create by: xtjnoob
+     * create time: 12:57 2019/1/4
+     * * @param request
+     * * @param response
+     * @return void
+     */
     public void toEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
         if (StringUtils.isEmpty(id)) {
             response.sendRedirect("/category/list.do");
             return;
         }
+        try {
+            long categoryId = Long.parseLong(id);
+            Category category = categoryService.getCategoryById(categoryId);
+            request.setAttribute(Constants.CATEGORY, category);
+            request.getRequestDispatcher("/WEB-INF/jsp/edit_category.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("/category/list.do");
+        }
+    }
 
-        long categoryId = Long.parseLong(id);
+    /**
+     * @Description: 处理编辑分类提交的数据
+     * create by: xtjnoob
+     * create time: 13:08 2019/1/4
+     * * @param request
+     * * @param response
+     * @return void
+     */
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String id = request.getParameter("id");
+        String name  = request.getParameter("name");
 
+        if (StringUtils.isEmpty(id) || StringUtils.isEmpty(name)) {
+            response.sendRedirect("/category/list.do");
+            return;
+        }
+        try {
+            long categoryId = Long.parseLong(id);
+            Category category = new Category();
+            category.setId(categoryId);
+            category.setName(name);
+            categoryService.updateCategoryById(category);
+            response.sendRedirect("/category/list.do");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("/category/list.do");
+        }
+    }
 
-        bookService.getBookById();
+    /**
+     * @Description: 删除分类
+     * create by: xtjnoob
+     * create time: 14:16 2019/1/4
+     * * @param request
+     * * @param response
+     * @return void
+     */
+    public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String id = request.getParameter("id");
+        if (StringUtils.isEmpty(id)) {
+            response.sendRedirect("/category/list.do");
+            return;
+        }
+        try {
+            long categoryId = Long.parseLong(id);
+            categoryService.removeCategoryById(categoryId);
+            response.sendRedirect("/category/list.do");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("/category/list.do");
+        }
     }
 }

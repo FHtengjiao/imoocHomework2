@@ -7,5 +7,8 @@ package com.xtjnoob.webutil;
  */
 public class Constants {
 
-    public static String CATEGORIES = "categories";
+    public static final String CATEGORY = "category";
+    public static final String CATEGORIES = "categories";
+    public static final String BOOKS = "books";
+    public static final String CATEGORY_NAME = "category_name";
 }
