@@ -15,8 +15,8 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
 
     @Override
-    public void getBookById() {
-
+    public Book getBookById(Long id) {
+        return bookMapper.getBookById(id);
     }
 
     @Override
@@ -27,5 +27,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public void addBooks(List<Book> books) {
         bookMapper.addBooks(books);
+    }
+
+    @Override
+    public void updateBook(Book book) {
+        bookMapper.updateBook(book);
+    }
+
+    @Override
+    public void deleteBookById(Long id) {
+        bookMapper.deleteBookById(id);
     }
 }

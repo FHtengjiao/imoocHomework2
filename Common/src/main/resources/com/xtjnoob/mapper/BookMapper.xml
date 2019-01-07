@@ -16,7 +16,20 @@
     <insert id="addBooks" useGeneratedKeys="true">
         INSERT book(category_id, name, level, price, img_path, create_time) VALUES
         <foreach collection="books" item="book" separator=",">
-            (#{book.categoryId}, #{book.name}, #{book.level}, #{book.price}, #{book.imgPath}, #{book.createTime})
+            (#{book.categoryId}, #{book.name}, #{book.level}, #{book.price}, #{book.imgPath}, CURRENT_TIME)
         </foreach>
     </insert>
+
+    <update id="updateBook">
+        UPDATE book
+        <set>
+            <if test="categoryId != null">category_id=#{categoryId},</if>
+            <if test="name != null &amp;&amp; name != ''">name=#{name},</if>
+            <if test="level != null">level=#{level},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="imgPath != null">img_path=#{imgPath},</if>
+            update_time = CURRENT_TIME
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

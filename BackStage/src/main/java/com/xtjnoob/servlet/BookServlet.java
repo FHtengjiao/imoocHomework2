@@ -70,12 +70,50 @@ public class BookServlet {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        List<Book> books = enctypeParser(request, response);
-        bookService.addBooks(books);
-        response.sendRedirect("/book/list.do?category=1");
+        List<Book> books = enctypeParser(request, response, "add");
+        if (books != null) {
+            bookService.addBooks(books);
+            response.sendRedirect("/book/list.do?category=1");
+        } else {
+            response.sendRedirect("/book/list.do?category=1");
+        }
     }
 
-    private List<Book> enctypeParser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void toEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String id = request.getParameter("id");
+        try {
+            Book book = bookService.getBookById(Long.parseLong(id));
+            List<Category> categories = categoryService.getAllCategories();
+            request.setAttribute(Constants.BOOK, book);
+            request.setAttribute(Constants.CATEGORIES, categories);
+            request.getRequestDispatcher("/WEB-INF/jsp/edit_book.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        List<Book> books = enctypeParser(request, response, "edit");
+        if (books == null) {
+            response.sendRedirect("/book/list.do?category=1");
+        } else {
+            Book book = books.get(0);
+            bookService.updateBook(book);
+            response.sendRedirect("/book/list.do?category="+book.getCategoryId());
+        }
+    }
+
+    public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String id = request.getParameter("id");
+        try {
+            bookService.deleteBookById(Long.parseLong(id));
+            response.sendRedirect("/book/list.do");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Book> enctypeParser(HttpServletRequest request, HttpServletResponse response, String method) throws IOException, ServletException {
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
         List<Book> books = new ArrayList<>();
@@ -91,6 +129,9 @@ public class BookServlet {
                     value = fileItem.getString("UTF-8");
                     System.out.println(filedName + "::" + value);
                     switch (filedName) {
+                        case "id":
+                            book.setId(Long.parseLong(value));
+                            break;
                         case "name":
                             book.setName(value);
                             break;
@@ -105,28 +146,39 @@ public class BookServlet {
                             break;
                     }
                 } else {
-                    String realPath = request.getServletContext().getRealPath("/img");
-                    book.setImgPath(realPath+"/"+fileItem.getName());
-                    InputStream is = fileItem.getInputStream();
-                    OutputStream os = new FileOutputStream(realPath+"/"+fileItem.getName());
-                    int len = 0;
-                    byte[] bytes = new byte[1024];
-                    for (; (len = is.read(bytes)) != -1; ) {
-                        os.write(bytes, 0, len);
-                        os.flush();
+                    if (!"".equals(fileItem.getName())) {
+                        String realPath = request.getServletContext().getRealPath("/img");
+                        book.setImgPath(realPath + "/" + fileItem.getName());
+                        InputStream is = fileItem.getInputStream();
+                        OutputStream os = new FileOutputStream(realPath + "/" + fileItem.getName());
+                        int len = 0;
+                        byte[] bytes = new byte[1024];
+                        for (; (len = is.read(bytes)) != -1; ) {
+                            os.write(bytes, 0, len);
+                            os.flush();
+                        }
+                        is.close();
+                        os.close();
+                    } else {
+                        if ("add".equals(method)) {
+                            return null;
+                        }
                     }
-                    is.close();
-                    os.close();
                 }
                 index++;
-                if (index % 5 == 0) {
-                    book.setCreateTime(new Date());
-                    books.add(book);
-                    book = new Book();
+                if ("add".equals(method)) {
+                    if (index % 5 == 0) {
+                        System.out.println(book);
+                        books.add(book);
+                        book = new Book();
+                    }
                 }
             }
+            if("edit".equals(method)){
+                books.add(book);
+            }
             return books;
-        } catch (FileUploadException e) {
+        } catch (FileUploadException | NumberFormatException e) {
             e.printStackTrace();
             return null;
         }

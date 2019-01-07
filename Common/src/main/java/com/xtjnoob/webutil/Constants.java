@@ -11,4 +11,5 @@ public class Constants {
     public static final String CATEGORIES = "categories";
     public static final String BOOKS = "books";
     public static final String CATEGORY_NAME = "category_name";
+    public static final String BOOK = "book";
 }

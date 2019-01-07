@@ -24,7 +24,7 @@
                 <p>请小心的新增图书记录，要是建了一个错误的就不好了。。。</p>
             </div>
             <div class="page-header">
-                <h3><small>新建</small></h3>
+                <h3><small>新建图书</small></h3>
             </div>
             <form class="form-horizontal" action="${pageContext.request.contextPath}/book/add.do" method="post"  enctype="multipart/form-data">
                 <div id="content">
