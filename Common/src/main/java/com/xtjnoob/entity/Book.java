@@ -84,4 +84,19 @@ public class Book {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", categoryId=" + categoryId +
+                ", name='" + name + '\'' +
+                ", level=" + level +
+                ", price=" + price +
+                ", imgPath='" + imgPath + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", category=" + category +
+                '}';
+    }
 }

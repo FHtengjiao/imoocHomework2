@@ -12,4 +12,11 @@
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
         <association property="category" column="category_id" select="com.xtjnoob.mapper.CategoryMapper.getCategoryById"/>
     </resultMap>
+
+    <insert id="addBooks" useGeneratedKeys="true">
+        INSERT book(category_id, name, level, price, img_path, create_time) VALUES
+        <foreach collection="books" item="book" separator=",">
+            (#{book.categoryId}, #{book.name}, #{book.level}, #{book.price}, #{book.imgPath}, #{book.createTime})
+        </foreach>
+    </insert>
 </mapper>

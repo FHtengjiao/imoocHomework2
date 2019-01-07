@@ -9,4 +9,5 @@ public interface BookService {
 
     List<Book> getBooksByCategory(Long categoryId);
 
+    void addBooks(List<Book> books);
 }
