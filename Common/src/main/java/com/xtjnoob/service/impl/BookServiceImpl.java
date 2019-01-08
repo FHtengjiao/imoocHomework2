@@ -20,8 +20,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBooksByCategory(Long categoryId) {
-        return bookMapper.getBooksByCategory(categoryId);
+    public List<Book> getBooks(Long categoryId) {
+        return bookMapper.getBooks(categoryId);
     }
 
     @Override

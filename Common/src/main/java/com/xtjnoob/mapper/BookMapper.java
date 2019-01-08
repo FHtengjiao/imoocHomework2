@@ -12,9 +12,7 @@ import java.util.List;
 @Repository
 public interface BookMapper {
 
-    @Select("SELECT * FROM book WHERE category_id = #{categoryId}")
-    @ResultMap("resultMap")
-    List<Book> getBooksByCategory(Long categoryId);
+    List<Book> getBooks(@Param("categoryId") Long categoryId);
 
     void addBooks(@Param("books") List<Book> books);
 

@@ -10,7 +10,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -20,7 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: xtjnoob
@@ -45,13 +45,16 @@ public class BookServlet {
      */
     public void list(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("category");
-        if (StringUtils.isEmpty(id)) {
+        if (null == id) {
             response.sendRedirect("/category/list.do");
             return;
         }
+        if ("".equals(id)) {
+
+        }
         try {
             long categoryId = Long.parseLong(id);
-            List<Book> books = bookService.getBooksByCategory(categoryId);
+            List<Book> books = bookService.getBooks(categoryId);
             List<Category> categories = categoryService.getAllCategories();
             String categoryName = categoryService.findCategoryName(categoryId);
             request.setAttribute(Constants.CATEGORY_NAME, categoryName);

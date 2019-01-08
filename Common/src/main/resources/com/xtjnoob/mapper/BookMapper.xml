@@ -32,4 +32,11 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="getBooks" resultMap="resultMap">
+        SELECT * FROM book
+        <where>
+            <if test="categoryId != null &amp;&amp; categoryId != ''">category_id=#{categoryId}</if>
+        </where>
+    </select>
 </mapper>
