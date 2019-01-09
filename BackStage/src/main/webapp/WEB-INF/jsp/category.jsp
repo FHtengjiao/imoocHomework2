@@ -18,6 +18,9 @@
                     </nav>
                 </c:forEach>
                 <nav>
+                    <a href="${pageContext.request.contextPath}/book/list.do?category=">全部</a>
+                </nav>
+                <nav>
                     <a href="${pageContext.request.contextPath}/category/list.do">分类</a>
                 </nav>
             </div>

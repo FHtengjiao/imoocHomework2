@@ -22,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void addCategory(Category category) {
+        category.setCreateTime(new Date());
         categoryMapper.add(category);
     }
 

@@ -1,5 +1,6 @@
+<%@page language="java" isELIgnored="false" contentType="text/html;charset=UTF-8" %>
 <html>
-<body>
-<h2>Hello World!</h2>
-</body>
+<head>
+    <meta http-equiv="refresh" content="0;url=${pageContext.request.contextPath}/site/list.do"/>
+</head>
 </html>

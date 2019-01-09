@@ -49,20 +49,21 @@ public class BookServlet {
             response.sendRedirect("/category/list.do");
             return;
         }
-        if ("".equals(id)) {
-
-        }
         try {
-            long categoryId = Long.parseLong(id);
+            Long categoryId = null;
+            String categoryName = "全部";
+            if (!"".equals(id)) {
+                categoryId = Long.parseLong(id);
+                categoryName = categoryService.findCategoryName(categoryId);
+            }
             List<Book> books = bookService.getBooks(categoryId);
             List<Category> categories = categoryService.getAllCategories();
-            String categoryName = categoryService.findCategoryName(categoryId);
             request.setAttribute(Constants.CATEGORY_NAME, categoryName);
             request.setAttribute(Constants.CATEGORIES, categories);
             request.setAttribute(Constants.BOOKS, books);
             request.getRequestDispatcher("/WEB-INF/jsp/book.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-            response.sendRedirect("/category/list.do");
+            response.sendRedirect("/book/list.do?category=");
         }
     }
 
@@ -76,9 +77,9 @@ public class BookServlet {
         List<Book> books = enctypeParser(request, response, "add");
         if (books != null) {
             bookService.addBooks(books);
-            response.sendRedirect("/book/list.do?category=1");
+            response.sendRedirect("/book/list.do?category=");
         } else {
-            response.sendRedirect("/book/list.do?category=1");
+            response.sendRedirect("/book/list.do?category=");
         }
     }
 
@@ -92,13 +93,14 @@ public class BookServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/edit_book.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            response.sendRedirect("/book/list.do?category=");
         }
     }
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         List<Book> books = enctypeParser(request, response, "edit");
         if (books == null) {
-            response.sendRedirect("/book/list.do?category=1");
+            response.sendRedirect("/book/list.do?category=");
         } else {
             Book book = books.get(0);
             bookService.updateBook(book);
@@ -110,7 +112,7 @@ public class BookServlet {
         String id = request.getParameter("id");
         try {
             bookService.deleteBookById(Long.parseLong(id));
-            response.sendRedirect("/book/list.do");
+            response.sendRedirect("/book/list.do?category=");
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -151,7 +153,7 @@ public class BookServlet {
                 } else {
                     if (!"".equals(fileItem.getName())) {
                         String realPath = request.getServletContext().getRealPath("/img");
-                        book.setImgPath(realPath + "/" + fileItem.getName());
+                        book.setImgPath(fileItem.getName());
                         InputStream is = fileItem.getInputStream();
                         OutputStream os = new FileOutputStream(realPath + "/" + fileItem.getName());
                         int len = 0;

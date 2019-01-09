@@ -12,7 +12,7 @@
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="${pageContext.request.contextPath}/book/list.do">
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}/book/list.do?category=">
                         慕课网图书管理
                     </a>
                 </div>
