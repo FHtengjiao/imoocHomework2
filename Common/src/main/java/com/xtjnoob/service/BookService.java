@@ -14,4 +14,6 @@ public interface BookService {
     void updateBook(Book book);
 
     void deleteBookById(Long id);
+
+    List<Book> getBooksWithPage(Long categoryId, int page, int size);
 }

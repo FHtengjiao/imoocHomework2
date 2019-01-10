@@ -38,4 +38,9 @@ public class BookServiceImpl implements BookService {
     public void deleteBookById(Long id) {
         bookMapper.deleteBookById(id);
     }
+
+    @Override
+    public List<Book> getBooksWithPage(Long categoryId, int page, int size) {
+        return null;
+    }
 }

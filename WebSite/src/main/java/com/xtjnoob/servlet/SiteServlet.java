@@ -31,14 +31,22 @@ public class SiteServlet extends HttpServlet {
     private CategoryService categoryService;
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String pageIndex = request.getParameter("page");
         String category = request.getParameter("category");
+
+        int page = 1;
+        int size = 6;
+        if (pageIndex != null) {
+            page = Integer.parseInt(pageIndex);
+        }
+
         Long categoryId = null;
         List<Book> books = null;
         try {
             if (!StringUtils.isEmpty(category)) {
                 categoryId = Long.parseLong(category);
             }
-            books = bookService.getBooks(categoryId);
+            books = bookService.getBooksWithPage(categoryId, page, size);
         } catch (NumberFormatException e) {
             response.sendRedirect("/site/list.do");
             return;

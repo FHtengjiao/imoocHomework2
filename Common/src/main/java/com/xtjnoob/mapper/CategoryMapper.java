@@ -12,7 +12,7 @@ public interface CategoryMapper {
     @ResultMap("resultMap")
     List<Category> getAllCategories();
 
-    @Insert("INSERT category(name) VALUES(#{name})")
+    @Insert("INSERT category(name,create_time) VALUES(#{name}, #{createTime})")
     void add(Category category);
 
     @Select("SELECT * FROM category WHERE id = #{id}")
